@@ -32,7 +32,7 @@ export default function Navbar() {
               className={cn(
                 "text-zinc-500 hover:text-zinc-800 transition-colors",
                 {
-                    "text-zinc-800 font-[500]" : pathname === href
+                    "text-zinc-900 font-[500]" : pathname === href
                 }
               )}
             >
