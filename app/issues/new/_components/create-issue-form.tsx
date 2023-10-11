@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import { TextField, Button, Callout, Text } from '@radix-ui/themes';
+import { TextField, Button, Callout } from '@radix-ui/themes';
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { createIssueSchema } from "@/app/validators/issue-validator-schema";
+import { ErrorMessage } from "@/app/_components/error-message";
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
@@ -57,9 +58,9 @@ export function CreateIssueForm() {
             placeholder="Title"
           />
         </TextField.Root>
-          {errors.title && <Text as="p"  color="red">
-            {errors.title.message}
-            </Text>}
+       <ErrorMessage>
+            {errors.title?.message}
+            </ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -71,9 +72,9 @@ export function CreateIssueForm() {
             />
           )}
         />
-        {errors.description && <Text color="red" as="p" >
-            {errors.description.message}
-            </Text>}
+      <ErrorMessage  >
+            {errors.description?.message}
+            </ErrorMessage>
         <Button disabled={isSubmitting} type="submit">
           Submit New Issue
         </Button>
