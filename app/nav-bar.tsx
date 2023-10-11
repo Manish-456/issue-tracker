@@ -12,7 +12,7 @@ const links = [
     href: "/",
   },
   {
-    label: "Issue",
+    label: "Issues",
     href: "/issues",
   },
 ];
