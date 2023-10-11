@@ -11,6 +11,7 @@ import { TextField, Button, Callout } from '@radix-ui/themes';
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { createIssueSchema } from "@/app/validators/issue-validator-schema";
 import { ErrorMessage } from "@/app/_components/error-message";
+import { Spinner } from "@/app/_components/spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
@@ -24,11 +25,7 @@ export function CreateIssueForm() {
     control,
     formState: { isSubmitting, errors },
   } = useForm<IssueForm>({
-    resolver : zodResolver(createIssueSchema),
-    defaultValues : {
-      title : "",
-      description : ""
-    }
+    resolver : zodResolver(createIssueSchema)
   });
 
   const onSubmit: SubmitHandler<IssueForm> = async (data) => {
@@ -76,7 +73,7 @@ export function CreateIssueForm() {
             {errors.description?.message}
             </ErrorMessage>
         <Button disabled={isSubmitting} type="submit">
-          Submit New Issue
+          {isSubmitting ? <Spinner /> : "Submit New Issue"}
         </Button>
       </form>
     </div>
