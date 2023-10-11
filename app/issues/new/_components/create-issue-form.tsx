@@ -1,17 +1,17 @@
 "use client";
+import axios from "axios";
 import React from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import { TextField, Button, Callout } from "@radix-ui/themes";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { TextField, Button, Callout, Text } from '@radix-ui/themes';
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { createIssueSchema } from "@/app/validators/issue-validator-schema";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>
 
 export function CreateIssueForm() {
   const [error, setError] = React.useState("");
@@ -21,8 +21,14 @@ export function CreateIssueForm() {
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting },
-  } = useForm<IssueForm>();
+    formState: { isSubmitting, errors },
+  } = useForm<IssueForm>({
+    resolver : zodResolver(createIssueSchema),
+    defaultValues : {
+      title : "",
+      description : ""
+    }
+  });
 
   const onSubmit: SubmitHandler<IssueForm> = async (data) => {
     try {
@@ -43,7 +49,7 @@ export function CreateIssueForm() {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <TextField.Root>
           <TextField.Input
             {...register("title")}
@@ -51,6 +57,9 @@ export function CreateIssueForm() {
             placeholder="Title"
           />
         </TextField.Root>
+          {errors.title && <Text as="p"  color="red">
+            {errors.title.message}
+            </Text>}
         <Controller
           name="description"
           control={control}
@@ -62,6 +71,9 @@ export function CreateIssueForm() {
             />
           )}
         />
+        {errors.description && <Text color="red" as="p" >
+            {errors.description.message}
+            </Text>}
         <Button disabled={isSubmitting} type="submit">
           Submit New Issue
         </Button>

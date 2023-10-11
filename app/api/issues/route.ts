@@ -1,11 +1,6 @@
-import {z} from 'zod';
+import { createIssueSchema } from '@/app/validators/issue-validator-schema';
 import prisma from '@/lib/db';
 import { NextResponse } from 'next/server';
-
-const createIssueSchema = z.object({
-    title : z.string().min(1).max(256),
-    description : z.string().min(1)
-})
 
 export async function POST(request : Request){
   try {
