@@ -9,7 +9,7 @@ export default function NewIssuePage() {
         <TextField.Input placeholder='Title'  />
       </TextField.Root>
         <TextArea placeholder="Description" />
-        <Button>Submit</Button>
+        <Button>Submit New Issue</Button>
     </div>
   )
 }
